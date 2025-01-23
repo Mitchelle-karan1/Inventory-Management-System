@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Item</title>
+</head>
+<body>
+    <h1>Add New Inventory Item</h1>
+    <form method="POST">
+        <label>Name: <input type="text" name="name" required></label><br>
+        <label>Category: <input type="text" name="category" required></label><br>
+        <label>Quantity: <input type="number" name="quantity" required></label><br>
+        <label>Price: <input type="number" step="0.01" name="price" required></label><br>
+        <label>Supplier: <input type="text" name="supplier"></label><br>
+        <button type="submit">Add Item</button>
+    </form>
+</body>
+</html>
