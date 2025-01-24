@@ -87,3 +87,43 @@ def home():
 
 if __name__ == "__main__":
     app.run(debug=True)
+    
+@app.route('/update/<int:item_id>', methods=['GET', 'POST'])
+def update_item(item_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    if request.method == 'POST':
+        # Get the updated values from the form
+        new_name = request.form['name']
+        new_quantity = int(request.form['quantity'])
+        new_price = float(request.form['price'])
+
+        # Update the item in the database
+        cursor.execute(
+            "UPDATE Inventory SET name = ?, quantity = ?, price = ? WHERE id = ?",
+            (new_name, new_quantity, new_price, item_id)
+        )
+        conn.commit()
+        conn.close()
+        return redirect('/')
+    
+    # Fetch the current item details
+    cursor.execute("SELECT * FROM Inventory WHERE id = ?", (item_id,))
+    item = cursor.fetchone()
+    conn.close()
+    
+    return render_template('update.html', item=item)
+@app.route('/delete/<int:item_id>', methods=['POST'])
+def delete_item(item_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    # Delete the item from the database
+    cursor.execute("DELETE FROM Inventory WHERE id = ?", (item_id,))
+    conn.commit()
+    conn.close()
+    return redirect('/')
+
+
+   
