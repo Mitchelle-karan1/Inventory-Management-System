@@ -125,5 +125,28 @@ def delete_item(item_id):
     conn.close()
     return redirect('/')
 
+@app.route('/', methods=['GET', 'POST'])
+def home():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    if request.method == 'POST':
+        search_term = request.form['search']
+        cursor.execute("SELECT * FROM Inventory WHERE name LIKE ?", ('%' + search_term + '%',))
+    else:
+        cursor.execute("SELECT * FROM Inventory")
+    
+    rows = cursor.fetchall()
+    conn.close()
+    
+    return render_template("inventory.html", inventory=rows)
+
+def get_db_connection():
+    conn = sqlite3.connect('db/inventory.db')
+    conn.row_factory = sqlite3.Row
+    return conn
+
+
+
 
    
